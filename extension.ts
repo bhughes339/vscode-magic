@@ -35,17 +35,15 @@ function doFormat(e: TextEditor, d: TextDocument, sel: Selection[]) {
                     lineTest = removeStr(lineTest, '\{[^\{}]*}');
                     let fixedLine = lineTest;
                     // find indentation points in line
-                    let found;
-                    do {
+                    let found = lineTest.search("(IF\{|DO\{| )");
+                    while (found !== -1) {
+                        let stackChar = (lineTest.charAt(found) === " ") ? "S" : "B";
+                        if (lineTest.charAt(found) !== " ") found += 2;
+                        let pushVal = (posStack.length > 0) ? last(posStack)[0]+found+1 : found+1;
+                        posStack.push([pushVal,stackChar]);
+                        lineTest = lineTest.slice(found+1);
                         found = lineTest.search("(IF\{|DO\{| )");
-                        if (found !== -1) {
-                            let stackChar = (lineTest.charAt(found) === " ") ? "S" : "B";
-                            if (lineTest.charAt(found) !== " ") found += 2;
-                            let pushVal = (posStack.length > 0) ? last(posStack)[0] + found + 1 : found + 1;
-                            posStack.push([pushVal,stackChar]);
-                            lineTest = lineTest.slice(found+1);
-                        }
-                    } while (found !== -1);
+                    }
                     // Pop indentation with end braces and semicolons as necessary
                     let closeBraces = fixedLine.match(/}/g);
                     if (closeBraces) {
