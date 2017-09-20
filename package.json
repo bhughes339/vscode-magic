@@ -1,0 +1,82 @@
+{
+    "name": "magic",
+    "displayName": "MAGIC",
+    "description": "MAGIC support for VSCode",
+    "version": "1.1.4",
+    "publisher": "bhughes339",
+    "engines": {
+        "vscode": "^1.16.0"
+    },
+    "categories": [
+        "Languages",
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.formatMagic"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.formatMagic",
+                "title": "Reindent MAGIC Code",
+                "description": "Reindent MAGIC Code"
+            }
+        ],
+        "languages": [
+            {
+                "id": "magic",
+                "aliases": [
+                    "MAGIC",
+                    "magic"
+                ],
+                "extensions": [
+                    ".txt"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "magic",
+                "scopeName": "source.magic",
+                "path": "./syntaxes/magic.tmLanguage.json"
+            }
+        ],
+        "configurationDefaults": {
+            "[magic]": {
+                "editor.tabSize": 1,
+                "editor.detectIndentation": false,
+                "editor.quickSuggestions": {
+                    "other": false,
+                    "comments": false,
+                    "strings": false
+                },
+                "editor.parameterHints": false,
+                "editor.suggestOnTriggerCharacters": false,
+                "editor.renderIndentGuides": false,
+                "editor.folding": false
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "typescript": "^2.5.2",
+        "vscode": "^1.1.5"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bhughes339/vscode-magic.git"
+    },
+    "__metadata": {
+        "id": "2002f536-bd69-496b-a3d3-46fe3e438aeb",
+        "publisherId": "c2a9ecf3-b739-435d-91d8-9dbbbeb51325",
+        "publisherDisplayName": "bhughes339"
+    }
+}
