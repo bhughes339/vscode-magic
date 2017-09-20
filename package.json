@@ -2,7 +2,7 @@
     "name": "magic",
     "displayName": "MAGIC",
     "description": "MAGIC support for VSCode",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "publisher": "bhughes339",
     "engines": {
         "vscode": "^1.16.0"
