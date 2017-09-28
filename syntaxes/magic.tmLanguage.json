@@ -57,7 +57,7 @@
 		"brackets": {
 			"name": "constant.numeric.magic",
 			"begin": "\\[",
-			"end": "]",
+			"end": "]|$",
 			"patterns": [{
 				"include": "#main"
 			},{

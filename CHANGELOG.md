@@ -4,6 +4,10 @@ All notable changes to the "magic" extension will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.6] - 2017-09-28
+- Fix square bracket multiline bug
+- Clean up documentation
+
 ## [1.1.5] - 2017-09-20
 - Github init
 - Reindent uses entire document if there's no selection
