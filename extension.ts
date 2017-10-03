@@ -12,6 +12,8 @@ import TextLine = vscode.TextLine;
 import TextDocument = vscode.TextDocument;
 import TextEditor = vscode.TextEditor;
 
+const MATCH_REG = /(IF\{|DO\{| |}|;)/g;
+
 export function activate(context: vscode.ExtensionContext) {
     console.log('Congratulations, your extension "magic" is now active!');
     vscode.commands.registerCommand('extension.formatMagic', formatMagic);
@@ -38,16 +40,16 @@ function doFormat(e: TextEditor, d: TextDocument, sel: Selection[]) {
             let position = 0;
             let matchStack: MatchChar[] = [];
             for (var y = sel[x].start.line; y <= sel[x].end.line; y++) {
-                let line: string = d.lineAt(y).text.trim();
+                let line = d.lineAt(y).text.trim();
                 // ignore comments
-                if (! line.startsWith(";") && line.search(/^~~ *;/) === -1) {
+                if (line.search(/^(?:~~ *)?;/) === -1) {
                     let lineTest = line;
                     // Remove quoted strings, one-line control statements, and non-control braced statements from line
-                    lineTest = removeStr(lineTest, '"[^"]*"');
+                    lineTest = removeStr(lineTest, '"[^"]+"');
                     lineTest = removeStr(lineTest, '\{[^\{}]*}');
                     // find match points in line
-                    let reg = /(IF\{|DO\{| |}|;)/g;
-                    let matchStart = reg.exec(lineTest);
+                    MATCH_REG.lastIndex = 0;
+                    let matchStart = MATCH_REG.exec(lineTest);
                     while (matchStart) {
                         switch (matchStart[0]) {
                             case " ":
@@ -79,7 +81,7 @@ function doFormat(e: TextEditor, d: TextDocument, sel: Selection[]) {
                                 matchStack.push(new MatchChar(y, matchStart.index+position+3, false));
                                 break;
                         }
-                        matchStart = reg.exec(lineTest);
+                        matchStart = MATCH_REG.exec(lineTest);
                     }
                 }
                 let formattedLine = (position > 0) ? " ".repeat(position) + line : line;
