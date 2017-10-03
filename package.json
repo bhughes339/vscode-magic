@@ -2,7 +2,7 @@
     "name": "magic",
     "displayName": "MAGIC",
     "description": "MAGIC support for VSCode",
-    "version": "1.1.6",
+    "version": "1.1.7",
     "publisher": "bhughes339",
     "engines": {
         "vscode": "^1.16.0"
@@ -78,5 +78,8 @@
         "id": "2002f536-bd69-496b-a3d3-46fe3e438aeb",
         "publisherId": "c2a9ecf3-b739-435d-91d8-9dbbbeb51325",
         "publisherDisplayName": "bhughes339"
+    },
+    "dependencies": {
+        "@types/node": "^8.0.31"
     }
 }

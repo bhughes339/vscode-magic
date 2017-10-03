@@ -13,62 +13,88 @@ import TextDocument = vscode.TextDocument;
 import TextEditor = vscode.TextEditor;
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log('Congratulations, your extension "magic-formatter" is now active!');
+    console.log('Congratulations, your extension "magic" is now active!');
     vscode.commands.registerCommand('extension.formatMagic', formatMagic);
+}
+
+class MatchChar {
+    public line: number;
+    public column: number;
+    public isSpace: boolean;
+    constructor(line, column, isSpace) {
+        this.line = line;
+        this.column = column;
+        this.isSpace = isSpace;
+    }
+    public toSelection() {
+        return new Selection(this.line, this.column, this.line, this.column);
+    }
 }
 
 function doFormat(e: TextEditor, d: TextDocument, sel: Selection[]) {
 	e.edit(function (edit) {
 		for (var x = 0; x < sel.length; x++) {
-            if (sel[x].isSingleLine) {
-                continue;
-            }
+            if (sel[x].isSingleLine) continue;
             let position = 0;
-            let posStack = [];
+            let matchStack: MatchChar[] = [];
             for (var y = sel[x].start.line; y <= sel[x].end.line; y++) {
                 let line: string = d.lineAt(y).text.trim();
-                if (! line.startsWith(";")) {
+                // ignore comments
+                if (! line.startsWith(";") && line.search(/^~~ *;/) === -1) {
                     let lineTest = line;
                     // Remove quoted strings, one-line control statements, and non-control braced statements from line
                     lineTest = removeStr(lineTest, '"[^"]*"');
                     lineTest = removeStr(lineTest, '\{[^\{}]*}');
-                    let fixedLine = lineTest;
-                    // find indentation points in line
-                    let found = lineTest.search("(IF\{|DO\{| )");
-                    while (found !== -1) {
-                        let stackChar = (lineTest.charAt(found) === " ") ? "S" : "B";
-                        if (lineTest.charAt(found) !== " ") found += 2;
-                        let pushVal = (posStack.length > 0) ? last(posStack)[0]+found+1 : found+1;
-                        posStack.push([pushVal,stackChar]);
-                        lineTest = lineTest.slice(found+1);
-                        found = lineTest.search("(IF\{|DO\{| )");
-                    }
-                    // Pop indentation with end braces and semicolons as necessary
-                    let closeBraces = fixedLine.match(/}/g);
-                    if (closeBraces) {
-                        for (var c = 0; c < closeBraces.length; c++) {
-                            // a closed brace will deindent to the last open brace, regardless of spaces
-                            try {
-                                while (last(posStack)[1] === "S") posStack.pop();
-                                posStack.pop();
-                            }
-                            catch(err) {
-                                if (err.name === "TypeError") braceMismatch(y);
-                            }
+                    // find match points in line
+                    let reg = /(IF\{|DO\{| |}|;)/g;
+                    let matchStart = reg.exec(lineTest);
+                    while (matchStart) {
+                        switch (matchStart[0]) {
+                            case " ":
+                                matchStack.push(new MatchChar(y, matchStart.index+position+1, true));
+                                break;
+                            case "}":
+                                try {
+                                    while (last(matchStack).isSpace) matchStack.pop();
+                                    matchStack.pop();
+                                }
+                                catch(err) {
+                                    if (err.name === "TypeError") {
+                                        Window.showErrorMessage("Brace mismatch: Too many close braces at line " + (y+1));
+                                        let pad = d.lineAt(y).text.length - lineTest.length;
+                                        let errCol = matchStart.index + pad + 1;
+                                        let sel = new Selection(y, errCol, y, errCol);
+                                        e.selection = sel;
+                                        e.revealRange(sel, 1);
+                                        return;
+                                    }
+                                }
+                                break;
+                            case ";":
+                                if (matchStack.length > 0) {
+                                    while (last(matchStack).isSpace) matchStack.pop();
+                                }
+                                break;
+                            default:
+                                matchStack.push(new MatchChar(y, matchStart.index+position+3, false));
+                                break;
                         }
-                    }
-                    // semicolon will deindent to the closest open brace
-                    if (line.endsWith(";") && posStack.length > 0) {
-                        if (last(posStack)[1] === "S") posStack.pop();
+                        matchStart = reg.exec(lineTest);
                     }
                 }
                 let formattedLine = (position > 0) ? " ".repeat(position) + line : line;
                 edit.replace(d.lineAt(y).range, formattedLine);
-                position = (posStack.length > 0) ? last(posStack)[0] : 0;
+                position = (matchStack.length > 0) ? last(matchStack).column : 0;
             }
-            if (posStack.length > 0) braceMismatch(y);
+            if (matchStack.length > 0) {
+                let errMatch = matchStack.pop();
+                Window.showErrorMessage("Brace mismatch: Too many open braces at line " + (errMatch.line+1));
+                e.selection = errMatch.toSelection();
+                e.revealRange(errMatch.toSelection());
+                return;
+            }
         }
-	});
+    });
 }
 
 function removeStr(line: string, re: string) {
@@ -82,12 +108,8 @@ function removeStr(line: string, re: string) {
     return line;
 }
 
-function last(stack) {
+function last(stack: MatchChar[]) {
     return stack[stack.length-1];
-}
-
-function braceMismatch(line) {
-    Window.showErrorMessage("The MAGIC code you selected has mismatched braces. Line " + line);
 }
 
 function formatMagic() {
