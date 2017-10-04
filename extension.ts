@@ -45,15 +45,15 @@ function doFormat(e: TextEditor, d: TextDocument, sel: Selection[]) {
                 if (line.search(/^(?:~~ *)?;/) === -1) {
                     let lineTest = line;
                     // Remove quoted strings, one-line control statements, and non-control braced statements from line
-                    lineTest = removeStr(lineTest, '"[^"]+"');
+                    lineTest = removeStr(lineTest, '"[^"]*"');
                     lineTest = removeStr(lineTest, '\{[^\{}]*}');
                     // find match points in line
-                    MATCH_REG.lastIndex = 0;
-                    let matchStart = MATCH_REG.exec(lineTest);
-                    while (matchStart) {
-                        switch (matchStart[0]) {
+                    let matchReg = /(IF\{|DO\{| |}|;)/g;
+                    let currentMatch = matchReg.exec(lineTest);
+                    while (currentMatch) {
+                        switch (currentMatch[0]) {
                             case " ":
-                                matchStack.push(new MatchChar(y, matchStart.index+position+1, true));
+                                matchStack.push(new MatchChar(y, currentMatch.index+position+1, true));
                                 break;
                             case "}":
                                 try {
@@ -64,7 +64,7 @@ function doFormat(e: TextEditor, d: TextDocument, sel: Selection[]) {
                                     if (err.name === "TypeError") {
                                         Window.showErrorMessage("Brace mismatch: Too many close braces at line " + (y+1));
                                         let pad = d.lineAt(y).text.length - lineTest.length;
-                                        let errCol = matchStart.index + pad + 1;
+                                        let errCol = currentMatch.index + pad + 1;
                                         let sel = new Selection(y, errCol, y, errCol);
                                         e.selection = sel;
                                         e.revealRange(sel, 1);
@@ -78,10 +78,10 @@ function doFormat(e: TextEditor, d: TextDocument, sel: Selection[]) {
                                 }
                                 break;
                             default:
-                                matchStack.push(new MatchChar(y, matchStart.index+position+3, false));
+                                matchStack.push(new MatchChar(y, currentMatch.index+position+3, false));
                                 break;
                         }
-                        matchStart = MATCH_REG.exec(lineTest);
+                        currentMatch = matchReg.exec(lineTest);
                     }
                 }
                 let formattedLine = (position > 0) ? " ".repeat(position) + line : line;
