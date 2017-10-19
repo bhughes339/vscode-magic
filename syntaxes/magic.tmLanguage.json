@@ -20,11 +20,11 @@
 			},{
 				"include": "#comments"
 			},{
+				"include": "#functions"
+			},{
 				"include": "#structures"
 			},{
 				"include": "#variables"
-			},{
-				"include": "#functions"
 			},{
 				"include": "#operators"
 			}]
