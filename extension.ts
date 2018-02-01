@@ -12,8 +12,6 @@ import TextLine = vscode.TextLine;
 import TextDocument = vscode.TextDocument;
 import TextEditor = vscode.TextEditor;
 
-const MATCH_REG = /(IF\{|DO\{| |}|;)/g;
-
 export function activate(context: vscode.ExtensionContext) {
     console.log('Congratulations, your extension "magic" is now active!');
     vscode.commands.registerCommand('extension.formatMagic', formatMagic);
@@ -44,11 +42,11 @@ function doFormat(e: TextEditor, d: TextDocument, sel: Selection[]) {
                 // ignore comments
                 if (line.search(/^(?:~~ *)?;/) === -1) {
                     let lineTest = line;
-                    // Remove quoted strings, one-line control statements, and non-control braced statements from line
+                    // Remove quoted strings and one-line braced statements
                     lineTest = removeStr(lineTest, '"[^"]*"');
                     lineTest = removeStr(lineTest, '\{[^\{}]*}');
                     // find match points in line
-                    let matchReg = /(IF\{|DO\{| |}|;)/g;
+                    let matchReg = /(\{| |}|;)/g;
                     let currentMatch = matchReg.exec(lineTest);
                     while (currentMatch) {
                         switch (currentMatch[0]) {
@@ -77,8 +75,8 @@ function doFormat(e: TextEditor, d: TextDocument, sel: Selection[]) {
                                     while (last(matchStack).isSpace) matchStack.pop();
                                 }
                                 break;
-                            default:
-                                matchStack.push(new MatchChar(y, currentMatch.index+position+3, false));
+                            default: // always matches {
+                                matchStack.push(new MatchChar(y, currentMatch.index+position+1, false));
                                 break;
                         }
                         currentMatch = matchReg.exec(lineTest);
