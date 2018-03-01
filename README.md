@@ -13,4 +13,4 @@ MAGIC syntax highlighting for Visual Studio Code
 
 Select **MAGIC** from the languages menu (<kbd>Ctrl</kbd>+<kbd>K</kbd>, <kbd>M</kbd>) to enable syntax highlighting.
 
-Built-in commands `Format Document` and `Format Selection` are supported.
+To reindent code, open the Command Palette (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>) and select **Reindent MAGIC Code**
