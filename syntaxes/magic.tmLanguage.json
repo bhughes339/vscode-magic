@@ -18,6 +18,8 @@
 			},{
 				"include": "#brackets"
 			},{
+				"include": "#quotebrackets"
+			},{
 				"include": "#comments"
 			},{
 				"include": "#functions"
@@ -96,6 +98,18 @@
 			},
 			"patterns": [{
 				"include": "#main"
+			}]
+		},
+		"quotebrackets": {
+			"name": "meta.quotebrackets.magic",
+			"begin": "`",
+			"end": "'",
+			"captures": {
+				"0": { "name": "punctuation.definition.quotebrackets.magic" }
+			},
+			"patterns": [{
+				"name": "constant.other.quotebrackets.magic",
+				"match": "[^,`']+"
 			}]
 		},
 		"strings": {
