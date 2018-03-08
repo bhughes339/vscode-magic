@@ -2,12 +2,13 @@
 
 [![Version](https://vsmarketplacebadge.apphb.com/version/bhughes339.magic.svg)](https://marketplace.visualstudio.com/items?itemName=bhughes339.magic)
 
-MAGIC syntax highlighting for Visual Studio Code
+MAGIC language support for Visual Studio Code
 
 ## Features
 
 - MAGIC syntax highlighting (mostly compatible with CS as well)
-- Workstation-style indentation of source and object code (experimental)
+- Workstation-style indentation of source and object code
+- Hover support for local variables and structures with proper documentation
 
 ## Usage
 
