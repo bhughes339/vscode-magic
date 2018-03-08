@@ -90,7 +90,7 @@ function doFormat(d: TextDocument, r: Range) {
             }
         }
         let formattedLine = (position > 0) ? " ".repeat(position) + line : line;
-        edits.push(vscode.TextEdit.replace(d.lineAt(y).range, formattedLine));
+        edits.push(TextEdit.replace(d.lineAt(y).range, formattedLine));
         position = (matchStack.length > 0) ? last(matchStack).column : 0;
     }
     if (matchStack.length > 0) {
