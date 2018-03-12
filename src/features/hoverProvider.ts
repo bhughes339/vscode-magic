@@ -8,10 +8,10 @@ export default class MagicHoverProvider implements vscode.HoverProvider {
         let word = (range) ? document.getText(range) : null;
         if (word) {
             word = word.replace(/[.]/g, '\\$&');
-            let exp = new RegExp('.*[ \\t]' + word + '[ \\t=-]+(.*)');
+            let exp = new RegExp('^;[ \\/\\t]+?' + word + '[ \\t]*[=-][ \\t]*(.*)');
             for (var i = 0; i < document.lineCount; i++) {
                 let line = document.lineAt(i).text;
-                if (line.substring(0,1) !== ';') {
+                if (line.charAt(0) !== ';') {
                     break;
                 }
                 let match = line.match(exp);
