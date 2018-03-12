@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 
-import { TextDocument, Position, CancellationToken, ProviderResult, Hover } from 'vscode';
+import { TextDocument, Position, ProviderResult, Hover } from 'vscode';
 
 export default class MagicHoverProvider implements vscode.HoverProvider {
-    public provideHover(document: TextDocument, position: Position, token: CancellationToken): ProviderResult<Hover | undefined> {
+    public provideHover(document: TextDocument, position: Position): ProviderResult<Hover | undefined> {
         let range = document.getWordRangeAtPosition(position, /\/?[A-Za-z\d.]+/);
         let word = (range) ? document.getText(range) : null;
         if (word) {

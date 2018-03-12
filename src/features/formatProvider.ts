@@ -1,16 +1,15 @@
 import * as vscode from 'vscode';
 
-import { TextDocument, FormattingOptions, Position, Range,
-    CancellationToken, ProviderResult, TextEdit } from 'vscode';
+import { TextDocument, Range, ProviderResult, TextEdit } from 'vscode';
 
 export class MagicDocFormatProvider implements vscode.DocumentFormattingEditProvider {
-    public provideDocumentFormattingEdits(document: TextDocument, options: FormattingOptions, token: CancellationToken): ProviderResult<TextEdit[]> {
-        return doFormat(document, null);
+    public provideDocumentFormattingEdits(document: TextDocument): ProviderResult<TextEdit[]> {
+        return doFormat(document);
     }
 }
 
 export class MagicSelFormatProvider implements vscode.DocumentRangeFormattingEditProvider {
-    public provideDocumentRangeFormattingEdits(document: TextDocument, range: Range, options: FormattingOptions, token: CancellationToken): ProviderResult<TextEdit[]> {
+    public provideDocumentRangeFormattingEdits(document: TextDocument, range: Range): ProviderResult<TextEdit[]> {
         return doFormat(document, range);
     }
 }
@@ -19,7 +18,7 @@ class MatchChar {
     public line: number;
     public column: number;
     public isSpace: boolean;
-    constructor(line, column, isSpace) {
+    constructor(line: number, column: number, isSpace: boolean) {
         this.line = line;
         this.column = column;
         this.isSpace = isSpace;
@@ -41,21 +40,25 @@ function last(stack: MatchChar[]) {
     return stack[stack.length - 1];
 }
 
-function doFormat(d: TextDocument, r: Range) {
-    if (r === null) {
+function doFormat(d: TextDocument, r?: Range) {
+    let formatRange: Range;
+    if (r) {
+        formatRange = r;
+    } else {
         let start = d.positionAt(0);
         let end = d.lineAt(d.lineCount - 1).range.end;
-        r = new Range(start, end)
+        formatRange = new Range(start, end)
     }
     let edits: TextEdit[] = [];
     let position = 0;
     let matchStack: MatchChar[] = [];
-    for (var y = r.start.line; y <= r.end.line; y++) {
+    for (var y = formatRange.start.line; y <= formatRange.end.line; y++) {
         let line = d.lineAt(y).text.trim();
         // ignore comments
         if (line.search(/^(?:~~ *)?;/) === -1) {
             let lineTest = line;
             // Remove quoted strings and one-line braced statements
+            lineTest = removeStr(lineTest, '`[^`]*\'');
             lineTest = removeStr(lineTest, '"[^"]*"');
             lineTest = removeStr(lineTest, '\{[^\{}]*}');
             // find match points in line
@@ -91,12 +94,16 @@ function doFormat(d: TextDocument, r: Range) {
             }
         }
         let formattedLine = (position > 0) ? " ".repeat(position) + line : line;
-        edits.push(TextEdit.replace(d.lineAt(y).range, formattedLine));
+        if (line !== formattedLine) {
+            edits.push(TextEdit.replace(d.lineAt(y).range, formattedLine));
+        }
         position = (matchStack.length > 0) ? last(matchStack).column : 0;
     }
     if (matchStack.length > 0) {
         let errMatch = matchStack.pop();
-        vscode.window.showErrorMessage("Format error: Too many open braces at line " + (errMatch.line + 1));
+        if (errMatch) {
+            vscode.window.showErrorMessage("Format error: Too many open braces at line " + (errMatch.line + 1));
+        }
         return;
     }
     return edits;
