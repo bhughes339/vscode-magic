@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 
-import { TextDocument, FormattingOptions, Position, Range, CancellationToken, ProviderResult, TextEdit } from 'vscode';
+import { TextDocument, FormattingOptions, Position, Range,
+    CancellationToken, ProviderResult, TextEdit } from 'vscode';
 
 export class MagicDocFormatProvider implements vscode.DocumentFormattingEditProvider {
     public provideDocumentFormattingEdits(document: TextDocument, options: FormattingOptions, token: CancellationToken): ProviderResult<TextEdit[]> {
