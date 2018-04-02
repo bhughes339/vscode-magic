@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [1.3.2] - 2018-03-12
+- Add //noformat and //endnoformat tags to add inline notes to MAGIC document (not valid MAGIC code)
+
+## [1.3.2] - 2018-03-12
 - Fix bug with hover support
 - Fix formatting with quotebrackets
 

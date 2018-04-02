@@ -3,11 +3,36 @@
 	"scopeName": "source.magic",
 	"firstLineMatch": "^.*,(\\d\\d\\.){3}\\d{4},",
 	"patterns": [{
+		"include": "#noformat"
+	},{
 		"include": "#macros"
 	},{
 		"include": "#main"
 	}],
 	"repository": {
+		"noformat": {
+			"name": "meta.noformat.magic",
+			"begin": "^//\\s*noformat",
+			"beginCaptures": {
+				"0": { "name": "comment.line.noformat.magic"}
+			},
+			"end": "^//\\s*endnoformat",
+			"endCaptures": {
+				"0": { "name": "comment.line.noformat.magic"}
+			},
+			"patterns": []
+		},
+		"macros": {
+			"name": "meta.macro.magic",
+			"begin": "^#?[A-Z0-9.]+$",
+			"beginCaptures": {
+				"0": { "name": "entity.name.function.magic" }
+			},
+			"end": "^\\s*$",
+			"patterns": [{
+				"include": "#main"
+			}]
+		},
 		"main": {
 			"patterns": [{
 				"include": "#control"
@@ -63,17 +88,6 @@
 			"endCaptures": {
 				"0": { "name": "punctuation.definition.brace.close.magic" }
 			},
-			"patterns": [{
-				"include": "#main"
-			}]
-		},
-		"macros": {
-			"name": "meta.macro.magic",
-			"begin": "^#?[A-Z0-9.]+$",
-			"beginCaptures": {
-				"0": { "name": "entity.name.function.magic" }
-			},
-			"end": "^\\n",
 			"patterns": [{
 				"include": "#main"
 			}]
