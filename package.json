@@ -1,11 +1,12 @@
 {
+    "enableProposedApi": true,
     "name": "magic",
     "displayName": "MAGIC",
     "description": "MAGIC support for VSCode",
     "version": "1.3.3",
     "publisher": "bhughes339",
     "engines": {
-        "vscode": "^1.16.0"
+        "vscode": "^1.22.0"
     },
     "categories": [
         "Languages",
@@ -47,8 +48,7 @@
                 },
                 "editor.parameterHints": false,
                 "editor.suggestOnTriggerCharacters": false,
-                "editor.renderIndentGuides": false,
-                "editor.folding": false
+                "editor.renderIndentGuides": false
             }
         }
     },
