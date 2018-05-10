@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 
-import { TextDocument, FoldingRange, FoldingRangeList, ProviderResult } from 'vscode';
+import { TextDocument, FoldingRange, ProviderResult } from 'vscode';
 
-export default class MagicFoldingProvider implements vscode.FoldingProvider {
-    public provideFoldingRanges(document: TextDocument): ProviderResult<FoldingRangeList> {
+export default class MagicFoldingProvider implements vscode.FoldingRangeProvider {
+    public provideFoldingRanges(document: TextDocument): ProviderResult<FoldingRange[]> {
         return findFoldRanges(document);
     }
 }
@@ -31,5 +31,5 @@ function findFoldRanges(document: TextDocument) {
             lastLineBlank = false;
         }
     }
-    return new FoldingRangeList(folds);
+    return folds;
 }

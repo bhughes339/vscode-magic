@@ -11,6 +11,6 @@ export function activate(context: vscode.ExtensionContext) {
         new MagicSelFormatProvider));
     context.subscriptions.push(vscode.languages.registerHoverProvider('magic',
         new MagicHoverProvider));
-    context.subscriptions.push(vscode.languages.registerFoldingProvider('magic',
+    context.subscriptions.push(vscode.languages.registerFoldingRangeProvider('magic',
         new MagicFoldingProvider));
 }
