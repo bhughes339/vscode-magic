@@ -16,4 +16,8 @@ export function activate(context: vscode.ExtensionContext) {
         new MagicFoldingProvider));
     context.subscriptions.push(vscode.languages.registerDefinitionProvider('magic',
         new MagicMacroDefinitionProvider));
+
+    vscode.languages.setLanguageConfiguration('magic', {
+        wordPattern: /[A-Za-z\d.]+/
+    });
 }
