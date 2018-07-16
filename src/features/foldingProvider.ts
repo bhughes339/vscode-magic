@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as Util from '../util/magicUtil';
 
 import { TextDocument, FoldingRange, ProviderResult } from 'vscode';
 
@@ -9,7 +10,7 @@ export default class MagicFoldingProvider implements vscode.FoldingRangeProvider
 }
 
 function findFoldRanges(document: TextDocument) {
-    let macroReg = /^#?[A-Z0-9.]+/;
+    let macroReg = Util.constants.macroDefinitionRange;
     var folds: FoldingRange[] = []
     var lastLineBlank = false;
     var foldLineStart = null;
