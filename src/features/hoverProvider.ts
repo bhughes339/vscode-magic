@@ -9,16 +9,24 @@ export default class MagicHoverProvider implements vscode.HoverProvider {
             new RegExp('/?' + Util.constants.wordRange.source));
         let word = (range) ? document.getText(range) : null;
         if (word) {
-            word = word.replace(/[.]/g, '\\$&');
-            let exp = new RegExp(`^;[ \\/\\t]+?${word}[ \\t]*[=-][ \\t]*(.*)`);
-            for (var i = 0; i < document.lineCount; i++) {
-                let line = document.lineAt(i).text;
-                if (line.charAt(0) !== ';') {
-                    break;
+            if (word.match(/^[\d]+$/)) {
+                let epochSeconds = parseInt(word) + Util.constants.epochDelta;
+                if (epochSeconds < 2147483647) {
+                    let date = new Date(epochSeconds * 1000);
+                    return new Hover('S(0) Date: ' + date.toLocaleString())
                 }
-                let match = line.match(exp);
-                if (match) {
-                    return new Hover(match[1]);
+            } else {
+                word = word.replace(/[.]/g, '\\$&');
+                let exp = new RegExp(`^;[ \\/\\t]+?${word}[ \\t]*[=-][ \\t]*(.*)`);
+                for (var i = 0; i < document.lineCount; i++) {
+                    let line = document.lineAt(i).text;
+                    if (line.charAt(0) !== ';') {
+                        break;
+                    }
+                    let match = line.match(exp);
+                    if (match) {
+                        return new Hover(match[1]);
+                    }
                 }
             }
         }
