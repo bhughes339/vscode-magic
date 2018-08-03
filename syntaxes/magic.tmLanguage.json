@@ -12,11 +12,11 @@
 	"repository": {
 		"noformat": {
 			"name": "meta.noformat.magic",
-			"begin": "^//\\s*noformat",
+			"begin": "^\\s*//\\s*noformat",
 			"beginCaptures": {
 				"0": { "name": "comment.line.noformat.magic"}
 			},
-			"end": "^//\\s*endnoformat",
+			"end": "^\\s*//\\s*endnoformat",
 			"endCaptures": {
 				"0": { "name": "comment.line.noformat.magic"}
 			},
@@ -31,6 +31,8 @@
 			"end": "^\\s*$",
 			"patterns": [{
 				"include": "#main"
+			},{
+				"include": "#noformat"
 			}]
 		},
 		"main": {
@@ -54,6 +56,8 @@
 				"include": "#variables"
 			},{
 				"include": "#operators"
+			},{
+				"include": "#noformat"
 			}]
 		},
 		"operators": {
