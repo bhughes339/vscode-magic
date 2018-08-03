@@ -4,6 +4,10 @@ All notable changes to the "magic" extension will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.4.3] - 2018-08-03
+- Add symbol support for procedure macros
+- Add experimental hover support for S(0) values
+
 ## [1.4.2] - 2018-06-21
 - Fix bug with definition commands
 - Finally add language word definition 
