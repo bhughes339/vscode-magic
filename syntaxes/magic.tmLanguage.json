@@ -24,7 +24,7 @@
 		},
 		"macros": {
 			"name": "meta.macro.magic",
-			"begin": "^#?[A-Z0-9.]+$",
+			"begin": "^(?:#|\\[\\d+]::)?[A-Z\\d.]+$",
 			"beginCaptures": {
 				"0": { "name": "entity.name.function.magic" }
 			},
