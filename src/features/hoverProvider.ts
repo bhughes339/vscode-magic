@@ -5,11 +5,13 @@ import { TextDocument, Position, ProviderResult, Hover } from 'vscode';
 
 export default class MagicHoverProvider implements vscode.HoverProvider {
     public provideHover(document: TextDocument, position: Position): ProviderResult<Hover | undefined> {
+        let config = vscode.workspace.getConfiguration("magic");
+        let hoverSeconds = config.get("hoverSeconds");
         let range = document.getWordRangeAtPosition(position,
             new RegExp('/?' + Util.constants.wordRange.source));
         let word = (range) ? document.getText(range) : null;
         if (word) {
-            if (word.match(/^[\d]+$/)) {
+            if (word.match(/^[\d]+$/) && hoverSeconds) {
                 let epochSeconds = parseInt(word) + Util.constants.epochDelta;
                 if (epochSeconds < 2147483647) {
                     let date = new Date(epochSeconds * 1000);

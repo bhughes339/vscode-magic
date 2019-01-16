@@ -2,7 +2,7 @@
     "name": "magic",
     "displayName": "MAGIC",
     "description": "MAGIC support for VSCode",
-    "version": "1.4.3",
+    "version": "1.4.4",
     "publisher": "bhughes339",
     "engines": {
         "vscode": "^1.23.0"
@@ -36,6 +36,17 @@
                 "path": "./syntaxes/magic.tmLanguage.json"
             }
         ],
+        "configuration": {
+            "type": "object",
+            "title": "MAGIC configuration",
+            "properties": {
+                "magic.hoverSeconds": {
+                    "type": "boolean",
+                    "default": "true",
+                    "description": "Hovering over an S(0) value will display its date/time values."
+                }
+            }
+        },
         "configurationDefaults": {
             "[magic]": {
                 "editor.tabSize": 1,
