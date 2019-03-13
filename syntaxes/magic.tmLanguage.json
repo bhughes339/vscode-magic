@@ -66,7 +66,7 @@
 				"match": "\\^"
 			},{
 				"name": "keyword.operator.concatenate.magic",
-				"match": "_"
+				"match": "(?<=\\S)_(?=\\S)"
 			},{
 				"name": "keyword.operator.logical.magic",
 				"match": "(?<=[A-Za-z0-9.})\"\\]])(?:&|!|(?:'?(?:=|>|<)))"
@@ -78,7 +78,10 @@
 				"match": "(?<=[A-Za-z0-9.})\"\\]])('?[#$%?]|[:|])"
 			},{
 				"name": "keyword.operator.not.magic",
-				"match": "'"
+				"match": "'(?=\\S)"
+			},{
+				"name": "keyword.operator.translation.magic",
+				"match": "(?=\\S)~(?=\\S)"
 			}]
 		},
 		"control": {
@@ -153,7 +156,7 @@
 		},
 		"structures": {
 			"name": "variable.structure.magic",
-			"match": "(?<![A-Za-z0-9.})\"\\]])[%&*?\\\\\\/:!][A-Za-z0-9.]+"
+			"match": "(?<![A-Za-z0-9.})\"\\]])[%$&*?\\\\\\/:!][A-Za-z0-9.]+"
 		},
 		"variables": {
 			"name": "variable.other.magic",
