@@ -23,6 +23,9 @@
                     "MAGIC",
                     "magic"
                 ],
+                "extensions": [
+                    ".npr-logic"
+                ],
                 "configuration": "./language-configuration.json"
             }
         ],
