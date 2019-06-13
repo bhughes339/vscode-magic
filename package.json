@@ -2,7 +2,7 @@
     "name": "magic",
     "displayName": "MAGIC",
     "description": "MAGIC support for VSCode",
-    "version": "1.4.5",
+    "version": "1.4.6",
     "publisher": "bhughes339",
     "engines": {
         "vscode": "^1.23.0"
@@ -44,6 +44,11 @@
                     "type": "boolean",
                     "default": "true",
                     "description": "Hovering over an S(0) value will display its date/time values."
+                },
+                "magic.hoverVisitNodes": {
+                    "type": "boolean",
+                    "default": "true",
+                    "description": "Hovering over an MRI visit node date string will convert it to a real date."
                 }
             }
         },
