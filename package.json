@@ -27,6 +27,12 @@
                     ".npr-logic"
                 ],
                 "configuration": "./language-configuration.json"
+            },
+            {
+                "id": "ams",
+                "aliases": [
+                    "AMS"
+                ]
             }
         ],
         "grammars": [
@@ -63,6 +69,15 @@
                 },
                 "editor.suggestOnTriggerCharacters": false,
                 "editor.renderIndentGuides": false
+            },
+            "[ams]": {
+                "editor.rulers": [
+                    80
+                ],
+                "editor.tabSize": 2,
+                "editor.insertSpaces": true,
+                "editor.wordWrap": "wordWrapColumn",
+                "editor.wordWrapColumn": 80
             }
         }
     },
