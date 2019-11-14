@@ -77,7 +77,8 @@
                 "editor.tabSize": 2,
                 "editor.insertSpaces": true,
                 "editor.wordWrap": "wordWrapColumn",
-                "editor.wordWrapColumn": 80
+                "editor.wordWrapColumn": 80,
+                "editor.wrappingIndent": "none"
             }
         }
     },
