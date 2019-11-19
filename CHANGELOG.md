@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [1.4.7] - 2019-11-08
+### Fixed
+- Lines wrapping incorrectly in AMS language
+
+## [1.4.7] - 2019-11-08
 ### Added
 - New language "ams" which wraps at 80 characters
 
