@@ -24,7 +24,7 @@ export default class MagicHoverProvider implements vscode.HoverProvider {
                 let epochSeconds = parseInt(word) + Util.constants.epochDelta;
                 if (epochSeconds < 2147483647) {
                     let date = new Date(epochSeconds * 1000);
-                    return new Hover('S(0) Date: ' + date.toLocaleString());
+                    return new Hover('S(0) Date: ' + date.toLocaleString(undefined, {hour12: false}));
                 }
             } else {
                 word = word.replace(/[.]/g, '\\$&');
