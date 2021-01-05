@@ -4,11 +4,15 @@ All notable changes to the "magic" extension will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.4.8] - 2020-12-15
+## [1.4.10] - 2021-01-05
+### Changes
+- S(0) hover logic changed to match MAGIC $TIME and $DATE
+
+## [1.4.9] - 2020-12-15
 ### Changes
 - S(0) hover uses 24h time instead of 12h
 
-## [1.4.7] - 2019-11-08
+## [1.4.8] - 2019-11-08
 ### Fixed
 - Lines wrapping incorrectly in AMS language
 
