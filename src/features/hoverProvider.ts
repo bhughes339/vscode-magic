@@ -12,6 +12,7 @@ export default class MagicHoverProvider implements vscode.HoverProvider {
             new RegExp('/?' + Util.constants.wordRange.source));
         let word = (range) ? document.getText(range) : null;
         if (word) {
+            // Convert MRI visit nodes to date/time
             let match;
             if ((match = word.match(/^(\d{8})\.(\d{4})$/)) && hoverVisitNodes) {
                 let fulldate = (99999999 - parseInt(match[1])).toString();
@@ -20,12 +21,9 @@ export default class MagicHoverProvider implements vscode.HoverProvider {
                     parseInt(time.slice(0, 2)), parseInt(time.slice(2)));
                 return new Hover(date.toLocaleString() + ` (${fulldate} ${time})`);
             }
+            // Convert S(0) to date/time
             if (word.match(/^[\d]+$/) && hoverSeconds) {
-                let epochSeconds = parseInt(word) + Util.constants.epochDelta;
-                if (epochSeconds < 2147483647) {
-                    let date = new Date(epochSeconds * 1000);
-                    return new Hover('S(0) Date: ' + date.toLocaleString(undefined, {hour12: false}));
-                }
+                return new Hover(Util.constants.magicSecondsToDateTime(parseInt(word)));
             } else {
                 word = word.replace(/[.]/g, '\\$&');
                 let exp = new RegExp(`^;[ \\/\\t]+?${word}[ \\t]*[=-][ \\t]*(.*)`);
