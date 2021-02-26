@@ -4,6 +4,10 @@ All notable changes to the "magic" extension will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.4.11] - 2021-02-26
+### Changes
+- S(0) hover logic reverted back to Javascript implementation
+
 ## [1.4.10] - 2021-01-05
 ### Changes
 - S(0) hover logic changed to match MAGIC $TIME and $DATE
