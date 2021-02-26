@@ -23,7 +23,10 @@ export default class MagicHoverProvider implements vscode.HoverProvider {
             }
             // Convert S(0) to date/time
             if (word.match(/^[\d]+$/) && hoverSeconds) {
-                return new Hover(Util.constants.magicSecondsToDateTime(parseInt(word)));
+                let dateTime;
+                if (dateTime = Util.constants.magicSecondsToDateTime(parseInt(word))) {
+                    return new Hover(dateTime);
+                }
             } else {
                 word = word.replace(/[.]/g, '\\$&');
                 let exp = new RegExp(`^;[ \\/\\t]+?${word}[ \\t]*[=-][ \\t]*(.*)`);
