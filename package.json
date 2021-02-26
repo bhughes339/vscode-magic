@@ -103,6 +103,6 @@
         "publisherDisplayName": "bhughes339"
     },
     "dependencies": {
-        "@types/node": "^8.0.31"
+        "@types/node": "^14.14.31"
     }
 }
