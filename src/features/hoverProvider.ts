@@ -22,7 +22,7 @@ export default class MagicHoverProvider implements vscode.HoverProvider {
                 return new Hover(date.toLocaleString() + ` (${fulldate} ${time})`);
             }
             // Convert S(0) to date/time
-            if (word.match(/^[\d]+$/) && hoverSeconds) {
+            if (word.match(/^[\d.]+$/) && hoverSeconds) {
                 let dateTime;
                 if (dateTime = Util.constants.magicSecondsToDateTime(parseInt(word))) {
                     return new Hover(dateTime);
